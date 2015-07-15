@@ -1,0 +1,10 @@
+{
+  "name": "slash-nrdb",
+  "version": "0.1.0",
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "express": "^4.13.1",
+    "multiline": "^1.0.2",
+    "request": "^2.58.0"
+  }
+}
