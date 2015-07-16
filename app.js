@@ -50,7 +50,7 @@ app.post('/', function (req, res) {
         });
     }, function (matches) {
         var o = '';
-        o += messages.MULTIPLE_RESULTS + '\n\n\n';
+        o += messages.MULTIPLE_RESULTS + '\n\n';
         matches.text().split('\n').map(function (s) {
             return s.trim().replace('\t', '').replace(/\s\s+/g, ' ');
         }).filter(function (s) {
