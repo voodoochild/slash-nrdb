@@ -52,7 +52,7 @@ app.post('/', function (req, res) {
         var o = '';
         o += messages.MULTIPLE_RESULTS + '\n\n';
         matches.text().split('\n').map(function (s) {
-            return s.trim().replace('\t', '').replace(/\s\s+/g, ' ');
+            return clean(s);
         }).filter(function (s) {
             return s.length > 0;
         }).map(function (s) {
@@ -97,7 +97,7 @@ app.get('/', function (req, res) {
         res.write(messages.MULTIPLE_RESULTS);
         res.write('\n\n');
         matches.text().split('\n').map(function (s) {
-            return s.trim().replace('\t', '').replace(/\s\s+/g, ' ');
+            return clean(s);
         }).filter(function (s) {
             return s.length > 0;
         }).map(function (s) {
@@ -119,7 +119,7 @@ console.info('Listening on port %s', port);
  * @param String s
  */
 function clean (s) {
-    return s.replace(/\s\s+/g, ' ').trim();
+    return s.replace(/\s\s+/g, ' ').replace('\t', '').trim();
 }
 
 /**
@@ -159,17 +159,37 @@ function search (text, oneResult, manyResults, noResults, error) {
     manyResults = manyResults || _noop;
     noResults = noResults || _noop;
     error = error || _noop;
+
+    // If forceful mode is on, pick any exact match when there are multiples
+    var forceful = false;
+    if (text.indexOf('!') === 0) {
+        forceful = true;
+        text = text.substr(1);
+    }
+
+    text = text.toLowerCase();
     request('http://netrunnerdb.com/find/?q=' + text, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            body = substitute(body);
-            var $ = cheerio.load(body);
+            var $ = cheerio.load(substitute(body));
             var panel = $('.panel');
             var matches = $('[data-th="Title"]');
 
             if (panel && panel.length === 1) {
                 oneResult($, panel);
             } else if (matches.length) {
-                manyResults(matches);
+                if (forceful) {
+                    matches.each(function (i, m) {
+                        m = $(m);
+                        if (clean(m.text()).toLowerCase() === text) {
+                            request(m.find('a').attr('href'), function (error, response, body) {
+                                var $ = cheerio.load(substitute(body));
+                                oneResult($, $('.panel'));
+                            });
+                        }
+                    });
+                } else {
+                    manyResults(matches);
+                }
             } else {
                 noResults();
             }
