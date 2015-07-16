@@ -128,18 +128,20 @@ function clean (s) {
  * @param String body
  */
 function substitute (body) {
-    body = body.replace('<span class="icon icon-click"></span>', ':_click:');
-    body = body.replace('<span class="icon icon-credit"></span>', ':_credit:');
-    body = body.replace('<span class="icon icon-trash"></span>', ':_trash:');
-    body = body.replace('<span class="icon icon-link"></span>', ':_link:');
-    body = body.replace('<span class="icon icon-mu"></span>', ':_mu:');
-    body = body.replace('<span class="icon icon-1mu"></span>', ':_1mu:');
-    body = body.replace('<span class="icon icon-2mu"></span>', ':_2mu:');
-    body = body.replace('<span class="icon icon-3mu"></span>', ':_3mu:');
-    body = body.replace('<span class="icon icon-recurring-credit"></span>', ':_recurringcredit:');
-    body = body.replace('<span class="icon icon-subroutine"></span>', ':_subroutine:');
-    body = body.replace('<strong>', '*');
-    body = body.replace('</strong>', '*');
+    body = body.replace(/<span class="icon icon-click"><\/span>/g, ':_click:');
+    body = body.replace(/<span class="icon icon-credit"><\/span>/g, ':_credit:');
+    body = body.replace(/<span class="icon icon-trash"><\/span>/g, ':_trash:');
+    body = body.replace(/<span class="icon icon-link"><\/span>/g, ':_link:');
+    body = body.replace(/<span class="icon icon-mu"><\/span>/g, ':_mu:');
+    body = body.replace(/<span class="icon icon-1mu"><\/span>/g, ':_1mu:');
+    body = body.replace(/<span class="icon icon-2mu"><\/span>/g, ':_2mu:');
+    body = body.replace(/<span class="icon icon-3mu"><\/span>/g, ':_3mu:');
+    body = body.replace(/<span class="icon icon-recurring-credit"><\/span>/g, ':_recurringcredit:');
+    body = body.replace(/<span class="icon icon-subroutine"><\/span>/g, ':_subroutine:');
+    body = body.replace(/<strong>/g, '*');
+    body = body.replace(/<\/strong>/g, '*');
+    body = body.replace(/<sup>/g, '^');
+    body = body.replace(/<\/sup>/g, '');
     return body;
 }
 
