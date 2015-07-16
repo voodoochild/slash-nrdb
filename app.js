@@ -14,11 +14,13 @@ var messages = {
 };
 
 var app = express();
-app.use(bodyParser.text());
+// app.use(bodyParser.text());
+// app.use(bodyParser.raw());
+app.use(bodyParser.urlencoded({extended: true}));
 
 // POST request returns JSON
 app.post('/', function (req, res) {
-    console.log(req.body);
+    console.log('*****', req.body, '*****');
     if (!req.body) return res.sendStatus(400);
 
     var postData = {};
