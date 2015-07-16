@@ -3,7 +3,8 @@ var bodyParser = require('body-parser');
 var request = require('request');
 var cheerio = require('cheerio');
 
-var token = process.env.TOKEN || '';
+var postToken = process.env.POST_TOKEN || '';
+var getToken = process.env.GET_TOKEN || '';
 var port = process.env.PORT || 3000;
 var messages = {
     INVALID_TOKEN: 'SEA Source, Scorch, Scorch. FLATLINED, bitch. (invalid token)',
@@ -33,7 +34,7 @@ app.post('/', function (req, res) {
     });
     postData.text = clean(postData.text.replace(postData.trigger_word, ''));
 
-    if (postData.token !== token) {
+    if (postData.token !== postToken) {
         return res.json({
             text: messages.INVALID_TOKEN
         });
@@ -85,7 +86,7 @@ app.get('/', function (req, res) {
     var text = req.query.text;
     res.type('text/plain');
 
-    if (req.query.token !== token) {
+    if (req.query.token !== getToken) {
         return res.send(messages.INVALID_TOKEN);
     } else if (!text || !text.length) {
         return res.send(messages.NO_QUERY);
