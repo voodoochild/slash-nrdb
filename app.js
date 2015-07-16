@@ -42,7 +42,7 @@ app.post('/', function (req, res) {
             o += '> ' + clean($(p).text()) + '\n';
         });
         flavor = clean(panel.find('.card-flavor').text());
-        if (flavor.length) o += flavor + '\n';
+        if (flavor.length) o += '_' + flavor + '_\n';
         o += clean(panel.find('.card-illustrator').text()) + '\n';
         o += panel.find('a.card-title').attr('href');
         res.json({
