@@ -14,20 +14,13 @@ var messages = {
 };
 
 var app = express();
-// app.use(bodyParser.text());
-// app.use(bodyParser.raw());
 app.use(bodyParser.urlencoded({extended: true}));
 
 // POST request returns JSON
 app.post('/', function (req, res) {
-    console.log('*****', req.body, '*****');
     if (!req.body) return res.sendStatus(400);
 
-    var postData = {};
-    req.body.split('\n').map(function (s) {
-        var m = s.split('=');
-        postData[m[0]] = m[1];
-    });
+    var postData = req.body;
     postData.text = clean(postData.text.replace(postData.trigger_word, ''));
 
     if (postData.token !== postToken) {
