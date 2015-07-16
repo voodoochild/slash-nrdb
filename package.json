@@ -1,6 +1,7 @@
 {
   "name": "slash-nrdb",
   "version": "0.1.0",
+  "repository": "https://github.com/voodoochild/slash-nrdb",
   "dependencies": {
     "cheerio": "^0.19.0",
     "express": "^4.13.1",

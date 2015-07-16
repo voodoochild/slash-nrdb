@@ -3,7 +3,8 @@ var request = require('request');
 var cheerio = require('cheerio');
 
 var app = express();
-var _TOKEN = 's0dnQ0ZUvq89CD8LlLPUOOSG';
+var TOKEN = process.env.TOKEN || '';
+var PORT = process.env.PORT || 3000;
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -16,7 +17,7 @@ app.get('/', function (req, res) {
     var q = req.query.text;
     res.type('text/plain');
 
-    if (token !== _TOKEN) {
+    if (token !== TOKEN) {
         res.send('SEA Source, Scorch, Scorch. FLATLINED, bitch. (invalid token)');
     } else if (!q || !q.length) {
         res.send('You have to tell me what to look for, fool.');
@@ -56,5 +57,5 @@ app.get('/', function (req, res) {
     }
 });
 
-app.listen(3030);
-console.info('Listening on port %s', 3030);
+app.listen(PORT);
+console.info('Listening on port %s', PORT);
