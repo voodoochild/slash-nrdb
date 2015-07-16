@@ -37,9 +37,10 @@ app.get('/', function (req, res) {
                         res.write('> ' + clean($(p).text()) + '\n');
                     });
                     flavor = clean(panel.find('.card-flavor').text());
-                    if (flavor.length) res.write('_' + flavor + '_\n');
+                    if (flavor.length) res.write(flavor + '\n');
                     res.write(clean(panel.find('.card-illustrator').text()) + '\n');
                     res.write(panel.find('a.card-title').attr('href'));
+                    res.write(':scorched:');
                 } else if (matches.length) {
                     res.write('Multiple cards matched your search:');
                     res.write('\n\n');
@@ -73,6 +74,11 @@ function substitute (body) {
     body = body.replace('<span class="icon icon-trash"></span>', '[trash]');
     body = body.replace('<span class="icon icon-link"></span>', '[link]');
     body = body.replace('<span class="icon icon-mu"></span>', '[mu]');
+    body = body.replace('<span class="icon icon-1mu"></span>', '[1mu]');
+    body = body.replace('<span class="icon icon-2mu"></span>', '[2mu]');
+    body = body.replace('<span class="icon icon-3mu"></span>', '[3mu]');
+    body = body.replace('<span class="icon icon-recurring-credit"></span>', '[recurring credit]');
+    body = body.replace('<span class="icon icon-subroutine"></span>', '[subroutine]');
     body = body.replace('<strong>', '*');
     body = body.replace('</strong>', '*');
     return body;
