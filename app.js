@@ -16,15 +16,9 @@ var messages = {
 var app = express();
 app.use(bodyParser.text());
 
-// Allow cross–origin requests
-app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-});
-
 // POST request returns JSON
 app.post('/', function (req, res) {
+    console.log(req.body);
     if (!req.body) return res.sendStatus(400);
 
     var postData = {};
