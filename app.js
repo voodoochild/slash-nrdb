@@ -20,23 +20,25 @@ app.get('/', function (req, res) {
     if (token !== TOKEN) {
         res.send('SEA Source, Scorch, Scorch. FLATLINED, bitch. (invalid token)');
     } else if (!q || !q.length) {
-        res.send('You have to tell me what to look for, fool.');
+        res.send('You have to tell me what to look for, mate.');
     } else {
         request('http://netrunnerdb.com/find/?q=' + q, function (error, response, body) {
             if (!error && response.statusCode == 200) {
+                body = substitute(body);
                 var $ = cheerio.load(body);
                 var panel = $('.panel');
                 var matches = $('[data-th="Title"]');
+                var flavor;
 
                 if (panel && panel.length === 1) {
-                    panel.text().split('\n').map(function (s) {
-                        return s.trim().replace('\t', '').replace(/\s\s+/g, ' ');
-                    }).filter(function (s) {
-                        return s.length > 0;
-                    }).map(function (s) {
-                        res.write(s);
-                        res.write('\n');
+                    res.write('*' + clean(panel.find('.panel-heading').text()).replace('♦', '◆') + '*\n');
+                    res.write(clean(panel.find('.card-info').text()) + '\n');
+                    panel.find('.card-text p').each(function (i, p) {
+                        res.write('> ' + clean($(p).text()) + '\n');
                     });
+                    flavor = clean(panel.find('.card-flavor').text());
+                    if (flavor.length) res.write('_' + flavor + '_\n');
+                    res.write(clean(panel.find('.card-illustrator').text()));
                 } else if (matches.length) {
                     res.write('Multiple cards matched your search:');
                     res.write('\n\n');
@@ -59,3 +61,17 @@ app.get('/', function (req, res) {
 
 app.listen(PORT);
 console.info('Listening on port %s', PORT);
+
+function clean (s) {
+    return s.replace(/\s\s+/g, ' ').trim();
+}
+
+function substitute (body) {
+    body = body.replace('<span class="icon icon-click"></span>', '[click]');
+    body = body.replace('<span class="icon icon-credit"></span>', '[credit]');
+    body = body.replace('<span class="icon icon-trash"></span>', '[trash]');
+    body = body.replace('<span class="icon icon-link"></span>', '[link]');
+    body = body.replace('<strong>', '*');
+    body = body.replace('</strong>', '*');
+    return body;
+}
