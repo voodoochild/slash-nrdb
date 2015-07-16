@@ -38,7 +38,8 @@ app.get('/', function (req, res) {
                     });
                     flavor = clean(panel.find('.card-flavor').text());
                     if (flavor.length) res.write('_' + flavor + '_\n');
-                    res.write(clean(panel.find('.card-illustrator').text()));
+                    res.write(clean(panel.find('.card-illustrator').text()) + '\n');
+                    res.write(panel.find('a.card-title').attr('href'));
                 } else if (matches.length) {
                     res.write('Multiple cards matched your search:');
                     res.write('\n\n');
@@ -71,6 +72,7 @@ function substitute (body) {
     body = body.replace('<span class="icon icon-credit"></span>', '[credit]');
     body = body.replace('<span class="icon icon-trash"></span>', '[trash]');
     body = body.replace('<span class="icon icon-link"></span>', '[link]');
+    body = body.replace('<span class="icon icon-mu"></span>', '[mu]');
     body = body.replace('<strong>', '*');
     body = body.replace('</strong>', '*');
     return body;
